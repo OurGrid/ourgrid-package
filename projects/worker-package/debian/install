@@ -1,0 +1,4 @@
+deployer/deb/worker/worker.properties /etc/ourgrid/worker-vbox1
+deployer/deb/worker-vbox/log4j.cfg.xml /etc/ourgrid/worker-vbox1
+deployer/deb/worker-vbox/worker-core /etc/ourgrid/bin
+deployer/deb/worker/worker /usr/bin

@@ -1,0 +1,16 @@
+Source: ourgrid-worker-vbox
+Section: misc
+Priority: optional
+Maintainer: Marcos Nobrega <marcosancj@lsd.ufcg.edu.br>
+Build-Depends: debhelper (>= 8), openjdk-6-jdk, cdbs, maven2
+Standards-Version: 4.4.0
+Homepage: http://ourgrid.org
+
+Package: ourgrid-worker-vbox
+Architecture: all
+Pre-Depends: ${cdbs:Pre-Depends}
+Depends: ${misc:Depends},
+ ${cdbs:Depends}
+Recommends: ${cdbs:Recommends}
+Suggests: ${cdbs:Suggests}
+Description: OurGrid worker component
