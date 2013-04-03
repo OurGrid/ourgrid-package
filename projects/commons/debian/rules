@@ -33,9 +33,11 @@ CDBS_DEPENDS_$(pkg) = lsb-base, adduser
 #  * source patched to load config from code dir (not oddly one dir out)
 #  * Add dummy config to support help2man usage from staging area
 build/$(pkg)::
-	mvn package -P commons -Duser.home=/tmp/$(pkg)
+	mvn package -P commons -Duser.home=/tmp/$(pkg) -Dmaven.test.skip=true
 clean::
 	rm -rf target
+
+DEB_DH_SHLIBDEPS_ARGS = | true
 
 #CDBS_PREDEPENDS_$(pkg) += , dbconfig-common
 #CDBS_RECOMMENDS_$(pkg) += , postgresql-client, postgresql

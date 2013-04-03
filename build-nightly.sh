@@ -67,9 +67,19 @@ for PROJECT_FOLDER in $PROJECTS_DIR/*; do
 
   cd $PROJECT_PATH
   tar xzf $ORIG_TGZ
-  cd $SOURCE
-  rsync -a $PROJECT_FOLDER/debian .
   
+  cd $PROJECT_PATH/$SOURCE
+  rsync -a $PROJECT_FOLDER/debian .
+
+  cd $GIT_PATH
+  CHANGELOG="$(git log $REV --pretty=format:'[ %an ]%n>%s' | $CURRENT_DIR/gitcl2deb.sh)"
+  
+  echo -e "${PACKAGE} (${DIST_REVISION}) ${DIST}; urgency=low\n\n\
+${CHANGELOG}\n\n\
+ -- ${DEBFULLNAME} <${DEBEMAIL}>  ${DATE_REPR}\n"\
+  > $PROJECT_PATH/$SOURCE/debian/changelog
+
+  cd $PROJECT_PATH/$SOURCE
   # Building debian package
   if [ "${BUILD_ARCH}" == "all" ]; then
     debuild
