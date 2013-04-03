@@ -34,17 +34,17 @@ fi
 cd $GIT_PATH
 REV="$(git log -1 --pretty=format:%h)"
 
-if [ ! -f $BUILD_DIR/prev.rev ]; then
-  git log --max-parents=0 HEAD --pretty=format:%h > ../prev.rev
+if [ -f $BUILD_DIR/prev.rev ]; then
+  REV_PREV="$(cat $BUILD_DIR/prev.rev)"
 fi
-
-REV_PREV="$(cat $BUILD_DIR/prev.rev)"
 
 if [ "$REV" == "$REV_PREV" ]; then
   echo "No need to build!"
   exit 0
 fi
 
+# Save previous build info
+echo "$REV" > $BUILD_DIR/prev.rev
 
 for PROJECT_FOLDER in $PROJECTS_DIR/*; do
   
@@ -86,6 +86,3 @@ for PROJECT_FOLDER in $PROJECTS_DIR/*; do
   rsync -a $PROJECT_PATH/${PACKAGE}_${BUILD_VERSION}* $DOWNLOAD_PACKAGE_DIR --exclude=*.build
 
 done
-
-# Save previous build info
-echo "$REV" > $BUILD_DIR/prev.rev
