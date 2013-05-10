@@ -1,9 +1,9 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: ourgrid-commons
+Upstream-Name: ourgrid-worker-vbox
 Upstream-Contact: Marcos Nobrega <marcosancj@lsd.ufcg.edu.br>
 
 Files: *
 Copyright: Copyright 2013 Marcos Nobrega <marcosancj@lsd.ufcg.edu.br>
 License: Apache-2
- ourgrid-commons is distributed under the Apache License 2.0. See the
+ ourgrid-worker-vbox is distributed under the Apache License 2.0. See the
  `LICENSE` file.

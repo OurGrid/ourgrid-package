@@ -1,4 +1,11 @@
 deployer/deb/worker/worker.properties /etc/ourgrid/worker-vbox1
-deployer/deb/worker-vbox/log4j.cfg.xml /etc/ourgrid/worker-vbox1
 deployer/deb/worker-vbox/worker-core /etc/ourgrid/bin
 deployer/deb/worker/worker /usr/bin
+deployer/deb/worker/ourvirt /usr/bin
+deployer/deb/worker-vbox/control/copyworkers-vbox /usr/bin
+deployer/deb/worker-vbox/log4j.cfg.xml /etc/ourgrid/worker-vbox1
+deployer/deb/worker/worker.spec.properties /etc/ourgrid/worker-vbox1
+deployer/deb/worker-vbox/default/worker-vbox /etc/default
+deployer/deb/worker-vbox/init.d/worker-vbox /etc/init.d
+deployer/deb/worker/destroyVM /usr/bin
+deployer/deb/worker/deleteWorkerVMs /usr/bin
