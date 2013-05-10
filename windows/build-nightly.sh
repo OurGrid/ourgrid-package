@@ -59,10 +59,10 @@ for PROJECT_FOLDER in $PROJECTS_DIR/*; do
   tar xzf $ORIG_TGZ
 
   cd $PROJECT_PATH/$SOURCE
-  cp -r $PROJECT_FOLDER/inno .  
+  cp -r $PROJECT_FOLDER/inno .
   cp -r $CURRENT_DIR/common/* ./inno
   bash ./inno/pre-build.sh
-  iscc inno/build.iss
+  iscc inno/build.iss /O"PROJECT_PATH" /F"$SOURCE"
     
   # Copy packages to download folder
   # DOWNLOAD_PACKAGE_DIR=$DOWNLOAD_ROOT/$PACKAGE/$SOURCE

@@ -5,7 +5,7 @@
 
 [Setup]
 AppName=OurGrid Worker
-AppVersion=4.3.0
+AppVersion=4.3.2
 AppPublisher=OurGrid
 AppCopyright=OurGrid
 DefaultDirName={pf}\OurGrid\Worker
@@ -16,15 +16,16 @@ SolidCompression=yes
 OutputDir=userdocs:.ourgrid\Worker\setup
 
 [Files]
-Source: "..\ReplaceVariables.vbs"; DestDir: "{src}"
-Source: "..\ReplaceTokens.vbs"; DestDir: "{src}"
-Source: "..\GenerateCert.bat"; DestDir: "{src}"
-Source: "..\wget\*"; DestDir: "{src}\wget"
+Source: "ReplaceVariables.vbs"; DestDir: "{src}"
+Source: "ReplaceTokens.vbs"; DestDir: "{src}"
+Source: "GenerateCert.bat"; DestDir: "{src}"
+Source: "wget\*"; DestDir: "{src}\wget"
 Source: "worker.properties"; DestDir: "{userappdata}\OurGrid\Worker"; Flags: onlyifdoesntexist uninsneveruninstall
 Source: "log4j.cfg.xml"; DestDir: "{app}"; Flags: onlyifdoesntexist
 Source: "worker.bat"; DestDir: "{app}"
 Source: "worker-nogui.bat"; DestDir: "{app}"
-Source: "..\icon.ico"; DestDir: "{app}"
+Source: "icon.ico"; DestDir: "{app}"
+Source: "..\vbox-win32-bin\*"; DestDir: "{app}\vbox-win32-bin"; Flags: recursesubdirs
 Source: "..\lib\*"; DestDir: "{app}\lib"; Flags: recursesubdirs
 Source: "..\lib\ourvirt*"; DestDir: "{app}\commons"; Flags: uninsneveruninstall
 Source: "..\lib\commons*"; DestDir: "{app}\commons"; Flags: uninsneveruninstall
@@ -44,8 +45,8 @@ Name: "{group}\Worker\Uninstall"; Filename: "{app}\uninstall.bat"; IconFilename:
 [Run]
 Filename: {src}\GenerateCert.bat; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""{code:GetXMPPUser}"" ""{code:GetXMPPServer}"" ""{code:Normalize|{userappdata}\OurGrid\Worker\certification\mycertificate\mycertificate.cer}"" ""{app}\lib"""; Flags: skipifdoesntexist waituntilterminated runhidden shellexec; StatusMsg: Setting configuration
 Filename: {src}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""commune.xmpp.username={code:GetXMPPUser};commune.xmpp.servername={code:GetXMPPServer};commune.xmpp.password={code:GetXMPPPassword};worker.peer.address={code:GetPeerUser}@{code:GetPeerServer};worker.storagedir={code:Normalize|{userappdata}\OurGrid\Worker\.storage};worker.playpenroot={code:Normalize|{userappdata}\OurGrid\Worker\playpen}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
-Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\worker.bat"" ""[[OGROOT]]={code:Normalize|{userappdata}\OurGrid\Worker};[[LOG4J]]={code:Normalize|{app}\log4j.cfg.xml}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
-Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\worker-nogui.bat"" ""[[OGROOT]]={code:Normalize|{userappdata}\OurGrid\Worker};[[LOG4J]]={code:Normalize|{app}\log4j.cfg.xml}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
+Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\worker.bat"" ""[[OGROOT]]={code:Normalize|{userappdata}\OurGrid\Worker};[[LOG4J]]={code:Normalize|{app}\log4j.cfg.xml};[[VBOXBIN]]={code:Normalize|{app}\vbox-win32-bin}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
+Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\worker-nogui.bat"" ""[[OGROOT]]={code:Normalize|{userappdata}\OurGrid\Worker};[[LOG4J]]={code:Normalize|{app}\log4j.cfg.xml};[[VBOXBIN]]={code:Normalize|{app}\vbox-win32-bin}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
 Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\log4j.cfg.xml"" ""[[LOGDIR]]={code:Normalize|{userappdata}\OurGrid\Worker\logs\log}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
 Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\remove-vm.bat"" ""[[COMMONS]]={app}\commons;[[VMNAME]]={code:GetVMName}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
 Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\uninstall.bat"" ""[[UNINSTALLEXE]]={code:Normalize|{uninstallexe}} "" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
@@ -57,14 +58,21 @@ Filename: {src}\wget\wget.exe; Parameters: " -N -O ""{userappdata}\OurGrid\Worke
 ; Custom Sandboxing
 Filename: {src}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""worker.executor=GENERIC;vm.disk.path={code:Normalize|{code:GetDiskImagePath}};vm.name={code:GetVMName};vm.user={code:GetVMUser};vm.password={code:GetVMPassword};vm.disk.type={code:GetVMDiskType};vm.os={code:GetOSType};vm.os.version={code:GetOSVersion};vm.memory={code:GetVMMem}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting up Virtual Box; Check: IsVBoxAndCustomSandbox
 
+; Virtualbox stuff
+Filename: {app}\vbox-win32-bin\comregister.cmd; Flags: skipifdoesntexist waituntilterminated runhidden shellexec; StatusMsg: Configuring VirtualBox
+Filename: {app}\vbox-win32-bin\NetAdpInstall.exe; Flags: skipifdoesntexist waituntilterminated runhidden; StatusMsg: Configuring VirtualBox
+Filename: {app}\vbox-win32-bin\NetFltInstall.exe; Flags: skipifdoesntexist waituntilterminated runhidden; StatusMsg: Configuring VirtualBox
+Filename: {app}\vbox-win32-bin\SUPInstall.exe; Flags: skipifdoesntexist waituntilterminated runhidden; StatusMsg: Configuring VirtualBox
+Filename: {sys}\rundll32; Parameters: " ""setupapi,InstallHinfSection"" ""DefaultInstall"" ""132"" ""{app}\vbox-win32-bin\drivers\network\vboxdrv\VBoxDrv.inf"" "; Flags: skipifdoesntexist waituntilterminated runhidden shellexec; StatusMsg: Configuring VirtualBox
+
 [UninstallDelete]
 Type: dirifempty; Name: {pf}\OurGrid\Worker; 
 Type: dirifempty; Name: {pf}\OurGrid;
 
 
 [Registry]
-
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; Check: InstallService; Flags: uninsdeletekeyifempty uninsdeletevalue createvalueifdoesntexist; ValueName: OurGrid Worker; ValueData: "start /min cmd /c ""{app}\worker-nogui.bat"" "
+Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: expandsz; ValueName: "VBOX_HOME"; ValueData: "{userappdata}\OurGrid\Worker\vbox"
 
 [Code]
 var
