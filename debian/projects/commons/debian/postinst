@@ -3,7 +3,7 @@
 set -e
 pkg=ourgrid-commons
 
-# Adds buddycloud user
+# Adds ourgrid user
 if [ "$1" = "configure" ]; then
     adduser --system --quiet --group --disabled-password \
         --gecos "ourgrid sys account" \

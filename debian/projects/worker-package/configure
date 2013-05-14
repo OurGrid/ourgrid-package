@@ -1,6 +1,6 @@
-PROJECT_NAME=buddycloud-media-server
-PACKAGE=buddycloud-media-server
-GIT_URL=https://github.com/buddycloud/buddycloud-media-server.git
-DIST_VERSION=0.1
+PROJECT_NAME=ourgrid-worker-vbox
+PACKAGE=ourgrid-worker-vbox
+GIT_URL=https://github.com/OurGrid/OurGrid.git
+DIST_VERSION=4.4.0
 DIST=unstable
 BUILD_ARCH=all
