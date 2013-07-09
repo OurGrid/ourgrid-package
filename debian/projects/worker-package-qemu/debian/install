@@ -1,0 +1,9 @@
+deployer/deb/worker/worker.properties /etc/ourgrid/worker-qemu1
+deployer/deb/worker-qemu/worker-core /etc/ourgrid/bin
+deployer/deb/worker/worker /usr/bin
+deployer/deb/worker-qemu/ourvirt /usr/bin
+deployer/deb/worker-qemu/control/copyworkers-qemu /usr/bin
+deployer/deb/worker-qemu/log4j.cfg.xml /etc/ourgrid/worker-qemu1
+deployer/deb/worker/worker.spec.properties /etc/ourgrid/worker-qemu1
+deployer/deb/worker-qemu/default/worker-qemu /etc/default
+deployer/deb/worker-qemu/init.d/worker-qemu /etc/init.d

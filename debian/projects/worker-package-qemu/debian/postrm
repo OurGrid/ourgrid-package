@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+update-rc.d worker-qemu remove
+rm -rf /etc/ourgrid/worker-qemu*
+rm -rf /etc/ourgrid/qemu_images
+rm -rf /var/log/ourgrid/worker-qemu*.log*
+
+exit 0
