@@ -5,5 +5,5 @@ Upstream-Contact: Marcos Nobrega <marcosancj@lsd.ufcg.edu.br>
 Files: *
 Copyright: Copyright 2013 Marcos Nobrega <marcosancj@lsd.ufcg.edu.br>
 License: Apache-2
- ourgrid-worker-vbox is distributed under the Apache License 2.0. See the
+ ourgrid-worker-qemu is distributed under the Apache License 2.0. See the
  `LICENSE` file.

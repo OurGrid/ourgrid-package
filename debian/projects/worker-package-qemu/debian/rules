@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 # -*- mode: makefile; coding: utf-8 -*-
 # Copyright © 2013 Marcos Nobrega <marcosancj@lsd.ufcg.edu.br>
-# Description: Main Debian packaging script for ourgrid-worker-vbox
+# Description: Main Debian packaging script for ourgrid-worker-qemu
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

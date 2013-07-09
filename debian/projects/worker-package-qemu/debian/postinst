@@ -70,26 +70,18 @@ IDLENESS_TIME=1200
 
 VM_NAME="vm-"$USERNAME
 INSTALLATION_DIR="/etc/ourgrid"
-VM_IMAGES_DIR=$INSTALLAiTION_DIR/qemu_images
+VM_IMAGES_DIR=$INSTALLATION_DIR/qemu_images
 IMAGE_NAME="og-image"
 IMAGE_DOWNLOADED_FILE="$IMAGE_NAME.tar.gz"
 
-
-#Download VBOX_IMAGE
 echo
 echo "================================================="
-echo "  Downloading OurGrid Worker VirtualBox image ..."
+echo "  Downloading OurGrid Worker QEMU image ..."
 echo "================================================="
 
-#wget -nc -P $VM_IMAGES_DIR http://maven.ourgrid.org/repos/linux/vbox/linux-vbox/og-image.vdi
 wget -nc -P $VM_IMAGES_DIR http://www2.lsd.ufcg.edu.br/~marcosancj/ubuntu-lts.qcow2
 
 /bin/bash copyworkers-qemu "$NUM_WORKERS" "$USERNAME" "$SERVERNAME" "$PASSWORD" "$PEERADDRESS" "$IMAGE_FILE"
-
-if [ -e /etc/ourgrid/vmnames.conf ] ; then
-	deleteWorkerVMs /etc/ourgrid/vmnames.conf vbox
-	rm -f /etc/ourgrid/vmnames.conf
-fi
 
 TOTAL_MEM=$(total_memory $NUM_WORKERS)
 
