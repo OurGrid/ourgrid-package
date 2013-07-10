@@ -76,6 +76,17 @@ IMAGE_DOWNLOADED_FILE="$IMAGE_NAME.tar.gz"
 
 echo
 echo "================================================="
+echo "  Downloading QEMU ..."
+echo "================================================="
+
+QEMU_HOME=$INSTALLATION_DIR/qemu
+wget -nc -P $QEMU_HOME http://www2.lsd.ufcg.edu.br/~marcosancj/qemu.tar.gz
+cd $QEMU_HOME
+tar -xzf qemu.tar.gz
+ln -s $QEMU_HOME/bin/qemu-system-x86_64 $QEMU_HOME/bin/qemu-system-i386
+
+echo
+echo "================================================="
 echo "  Downloading OurGrid Worker QEMU image ..."
 echo "================================================="
 
@@ -108,21 +119,9 @@ do
 	echo "vm.networktype=host-only" >> $WORKER_PROPERTIES
 	
 	echo "vm.name=""$VM_NAME"_"$WORKER_NUM" >> $WORKER_PROPERTIES
-	echo $VM_NAME"_"$WORKER_NUM >> /etc/ourgrid/vmnames.conf
 	
-	#NEW_DISK_PATH="$VM_IMAGES_DIR/$IMAGE_NAME"_"$(hostname)"_"$WORKER_NUM".vdi
 	NEW_DISK_PATH="$VM_IMAGES_DIR/ubuntu-lts.qcow2"
 	echo "vm.disk.path=""$NEW_DISK_PATH" >> $WORKER_PROPERTIES
-	
-	#clone image
-	#if [ ! -e "$NEW_DISK_PATH" ] ; then
-	#	if [ -e "$VM_IMAGES_DIR/$IMAGE_NAME".vdi ] ; then
-	#		ourvirt -m clone -h qemu -source "$VM_IMAGES_DIR/$IMAGE_NAME".vdi -target "$NEW_DISK_PATH"
-	#	else
-	#		echo "Error while cloning qemu image."
-	#		exit 1
-	#	fi
-	#fi
 	
 	#IDLENESS DETECTOR
 	if echo $IDLENESS_DETECTOR | egrep -q Yes 
@@ -140,11 +139,15 @@ done
 
 
 chmod +x /etc/init.d/worker-qemu
-update-rc.d worker-qemu defaults 
+chmod +x /etc/ourgrid/bin/worker-core
+update-rc.d worker-qemu defaults
+
+# Creating log directory and changing owner to OurGrid
+mkdir -p /var/log/ourgrid
+chown -R ourgrid:ourgrid /var/log/ourgrid 
 
 chown ourgrid /usr/bin/worker
-#chown ourgrid /usr/bin/testjvm
-#chown -R ourgrid /usr/share/ourgrid
+chown -R ourgrid /usr/share/ourgrid
 chown -R ourgrid /etc/ourgrid
 
 rm -f /usr/bin/copyworkers-vbox

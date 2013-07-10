@@ -2,10 +2,4 @@
 
 worker stop > /dev/null 2>&1 || true
 
-if [ "$1" = "remove" ]; then
-	if [ -d /etc/ourgrid/qemu_images ] ; then
-		rm -f /etc/ourgrid/vmnames.conf
-	fi
-fi
-
 exit 0
