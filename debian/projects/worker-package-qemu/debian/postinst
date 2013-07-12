@@ -84,6 +84,7 @@ wget -nc -P $QEMU_HOME http://www2.lsd.ufcg.edu.br/~marcosancj/qemu.tar.gz
 cd $QEMU_HOME
 tar -xzf qemu.tar.gz
 ln -s $QEMU_HOME/bin/qemu-system-x86_64 $QEMU_HOME/bin/qemu-system-i386
+rm -f $QEMU_HOME/qemu.tar.gz
 
 echo
 echo "================================================="
@@ -135,6 +136,13 @@ do
 	echo "worker.storagedir=""$STORAGE_FOLDER" >> $WORKER_PROPERTIES
 	mkdir -p $STORAGE_FOLDER
 	chmod -R 777 $STORAGE_FOLDER
+	
+	#create playpen root folder
+	PLAYPEN_ROOT_FOLDER="/etc/ourgrid/worker-qemu"$WORKER_NUM"/.playpenroot"
+	echo "worker.playpenroot=""$PLAYPEN_ROOT_FOLDER" >> $WORKER_PROPERTIES
+	mkdir -p $PLAYPEN_ROOT_FOLDER
+	chmod -R 755 $PLAYPEN_ROOT_FOLDER
+	chown -R ourgrid:ourgrid $PLAYPEN_ROOT_FOLDER
 done
 
 
@@ -147,7 +155,6 @@ mkdir -p /var/log/ourgrid
 chown -R ourgrid:ourgrid /var/log/ourgrid 
 
 chown ourgrid /usr/bin/worker
-chown -R ourgrid /usr/share/ourgrid
 chown -R ourgrid /etc/ourgrid
 
 rm -f /usr/bin/copyworkers-vbox
