@@ -83,7 +83,6 @@ QEMU_HOME=$INSTALLATION_DIR/qemu
 wget -nc -P $QEMU_HOME http://www2.lsd.ufcg.edu.br/~marcosancj/qemu.tar.gz
 cd $QEMU_HOME
 tar -xzf qemu.tar.gz
-ln -s $QEMU_HOME/bin/qemu-system-x86_64 $QEMU_HOME/bin/qemu-system-i386
 rm -f $QEMU_HOME/qemu.tar.gz
 
 echo
@@ -116,7 +115,7 @@ do
 	echo "vm.memory=$TOTAL_MEM" >> $WORKER_PROPERTIES
 	echo "vm.password=reverse" >> $WORKER_PROPERTIES
 	echo "vm.user=ubuntu" >> $WORKER_PROPERTIES
-	echo "vm.start.timeout=120" >> $WORKER_PROPERTIES
+	echo "vm.start.timeout=240" >> $WORKER_PROPERTIES
 	echo "vm.networktype=host-only" >> $WORKER_PROPERTIES
 	
 	echo "vm.name=""$VM_NAME"_"$WORKER_NUM" >> $WORKER_PROPERTIES

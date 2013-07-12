@@ -7,8 +7,8 @@ pkg=ourgrid-commons
 if [ "$1" = "configure" ]; then
     adduser --system --quiet --group --disabled-password \
         --gecos "ourgrid sys account" \
-        --no-create-home --home "/var/run/$pkg" \
-        ourgrid
+        --home "/var/run/$pkg" \
+        ourgrid || true
 fi
 
 #DEBHELPER#
