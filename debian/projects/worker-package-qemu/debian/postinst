@@ -151,7 +151,7 @@ update-rc.d worker-qemu defaults
 
 # Creating log directory and changing owner to OurGrid
 mkdir -p /var/log/ourgrid
-chown -R ourgrid:ourgrid /var/log/ourgrid 
+chown -R ourgrid:ourgrid /var/log/ourgrid
 
 chown ourgrid /usr/bin/worker
 chown -R ourgrid /etc/ourgrid
