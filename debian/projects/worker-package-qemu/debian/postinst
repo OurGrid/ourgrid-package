@@ -149,7 +149,7 @@ chmod +x /etc/init.d/worker-qemu
 chmod +x /etc/ourgrid/bin/worker-core
 update-rc.d worker-qemu defaults
 
-#Installing files for idleness detector
+# Installing files for idleness detector
 CPU_ARCH=`uname -m`
 CPU_x86_64_ARCH=x86_64
 tar -xvf /etc/ourgrid/xprintidle.tar.gz -C /etc/ourgrid/
@@ -166,6 +166,9 @@ touch /etc/ourgrid/idleness
 chmod 777 /etc/ourgrid/idleness
 chmod +x /etc/ourgrid/bin/xprintidle
 chmod +x /etc/X11/Xsession.d/99ourgrid-worker-idleness
+if [ ! -z $DISPLAY ]; then 
+	 /etc/X11/Xsession.d/99ourgrid-worker-idleness
+fi
 
 # Creating log directory and changing owner to OurGrid
 mkdir -p /var/log/ourgrid
