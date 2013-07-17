@@ -30,7 +30,7 @@ memory() {
   TOTAL_MEM=`grep MemTotal /proc/meminfo | awk '{print $2}'`
   SO_MEM=`expr 512 \* 1024`
   ALLOCABLE_MEM=`expr $TOTAL_MEM - $SO_MEM`
-  VM_MEM=`expr 256 \* 1024`
+  VM_MEM=`expr 128 \* 1024`
   NUM_WORKERS_BY_MEM=`expr $ALLOCABLE_MEM / $VM_MEM`
   echo $NUM_WORKERS_BY_MEM
 }
@@ -148,6 +148,24 @@ done
 chmod +x /etc/init.d/worker-qemu
 chmod +x /etc/ourgrid/bin/worker-core
 update-rc.d worker-qemu defaults
+
+#Installing files for idleness detector
+CPU_ARCH=`uname -m`
+CPU_x86_64_ARCH=x86_64
+tar -xvf /etc/ourgrid/xprintidle.tar.gz -C /etc/ourgrid/
+if [ $CPU_ARCH == $CPU_X86_64_ARCH ]; then 
+	mv /etc/ourgrid/xprintidle-x86_64 /etc/ourgrid/bin/xprintidle
+	rm /etc/ourgrid/xprintidle-i386
+else
+	mv /etc/ourgrid/xprintidle-i386 /etc/ourgrid/bin/xprintidle
+	rm /etc/ourgrid/xprintidle-x86_64
+fi
+
+rm /etc/ourgrid/xprintidle.tar.gz
+touch /etc/ourgrid/idleness
+chmod 777 /etc/ourgrid/idleness
+chmod +x /etc/ourgrid/bin/xprintidle
+chmod +x /etc/X11/Xsession.d/99ourgrid-worker-idleness
 
 # Creating log directory and changing owner to OurGrid
 mkdir -p /var/log/ourgrid

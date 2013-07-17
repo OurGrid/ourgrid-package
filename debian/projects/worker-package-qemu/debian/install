@@ -7,3 +7,5 @@ deployer/deb/worker-qemu/log4j.cfg.xml /etc/ourgrid/worker-qemu1
 deployer/deb/worker/worker.spec.properties /etc/ourgrid/worker-qemu1
 deployer/deb/worker-qemu/default/worker-qemu /etc/default
 deployer/deb/worker-qemu/init.d/worker-qemu /etc/init.d
+deployer/deb/worker/99ourgrid-worker-idleness /etc/X11/Xsession.d
+deployer/deb/worker/xprintidle.tar.gz /etc/ourgrid
