@@ -5,5 +5,7 @@ rm -rf /etc/ourgrid/worker-qemu*
 rm -rf /etc/ourgrid/qemu_images
 rm -rf /etc/ourgrid/qemu
 rm -rf /var/log/ourgrid/worker-qemu*.log*
+rm -rf /etc/ourgrid/bin/xprintidle
+rm -rf /etc/ourgrid/idleness
 
 exit 0
