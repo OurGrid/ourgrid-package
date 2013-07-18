@@ -113,8 +113,8 @@ do
 	echo "vm.disk.type=sata" >> $WORKER_PROPERTIES
 	echo "vm.os=linux" >> $WORKER_PROPERTIES
 	echo "vm.memory=$TOTAL_MEM" >> $WORKER_PROPERTIES
-	echo "vm.password=reverse" >> $WORKER_PROPERTIES
-	echo "vm.user=ubuntu" >> $WORKER_PROPERTIES
+	echo "vm.password=worker" >> $WORKER_PROPERTIES
+	echo "vm.user=worker" >> $WORKER_PROPERTIES
 	echo "vm.start.timeout=240" >> $WORKER_PROPERTIES
 	echo "vm.networktype=host-only" >> $WORKER_PROPERTIES
 	

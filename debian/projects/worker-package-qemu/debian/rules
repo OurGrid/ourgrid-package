@@ -25,7 +25,7 @@ daemon = $(pkg)
 # Needed both at build time and (always) at runtime
 #  * node modules needed at build time to create manpage
 CDBS_DEPENDS_$(pkg) = lsb-base, adduser, default-jre | openjdk-7-jre | openjdk-6-jre, libxss1
-# CDBS_RECOMMENDS_$(pkg) = prosody | ejabberd | jabberd2
+CDBS_RECOMMENDS_$(pkg) = kvm
 
 # DEB_INSTALL_DOCS_ALL += README.md
 
@@ -34,9 +34,3 @@ CDBS_DEPENDS_$(pkg) = lsb-base, adduser, default-jre | openjdk-7-jre | openjdk-6
 #  * Add dummy config to support help2man usage from staging area
 build/$(pkg)::
 clean::
-
-#CDBS_PREDEPENDS_$(pkg) += , dbconfig-common
-#CDBS_RECOMMENDS_$(pkg) += , postgresql-client, postgresql
-#install/$(pkg)::
-#	install -D -m 0644 resources/schema/create_schema.sql \
-#	'$(cdbs_curdestdir)/usr/share/dbconfig-common/data/buddycloud-media-server/install/pgsql'
