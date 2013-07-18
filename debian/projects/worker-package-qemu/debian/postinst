@@ -153,7 +153,7 @@ update-rc.d worker-qemu defaults
 CPU_ARCH=`uname -m`
 CPU_x86_64_ARCH=x86_64
 tar -xvf /etc/ourgrid/xprintidle.tar.gz -C /etc/ourgrid/
-if [ $CPU_ARCH == $CPU_X86_64_ARCH ]; then 
+if [ "$CPU_ARCH" == "$CPU_X86_64_ARCH" ]; then 
 	mv /etc/ourgrid/xprintidle-x86_64 /etc/ourgrid/bin/xprintidle
 	rm /etc/ourgrid/xprintidle-i386
 else
