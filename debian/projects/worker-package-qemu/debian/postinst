@@ -72,7 +72,11 @@ VM_NAME="vm-"$USERNAME
 INSTALLATION_DIR="/etc/ourgrid"
 VM_IMAGES_DIR=$INSTALLATION_DIR/qemu_images
 IMAGE_NAME="og-image"
-IMAGE_DOWNLOADED_FILE="$IMAGE_NAME.tar.gz"
+IMAGE_DOWNLOADED_FILE="$IMAGE_NAME.qcow2"
+
+CPU_ARCH=`uname -m`
+CPU_x86_64_ARCH=x86_64
+QEMU_DOWNLOADED_NAME="qemu.tar.gz"
 
 echo
 echo "================================================="
@@ -80,17 +84,22 @@ echo "  Downloading QEMU ..."
 echo "================================================="
 
 QEMU_HOME=$INSTALLATION_DIR/qemu
-wget -nc -P $QEMU_HOME http://www2.lsd.ufcg.edu.br/~marcosancj/qemu.tar.gz
+if [ "$CPU_ARCH" == "$CPU_X86_64_ARCH" ]; then 
+	QEMU_DOWNLOAD_URL="http://maven.ourgrid.org/repos/linux/qemu/linux-qemu/qemu-arch64.tar.gz"
+else
+	QEMU_DOWNLOAD_URL="http://maven.ourgrid.org/repos/linux/qemu/linux-qemu/qemu-arch32.tar.gz"
+fi
+wget -nc -P $QEMU_HOME -O $QEMU_DOWNLOADED_NAME $QEMU_DOWNLOAD_URL
 cd $QEMU_HOME
-tar -xzf qemu.tar.gz
-rm -f $QEMU_HOME/qemu.tar.gz
+tar -xzf $QEMU_DOWNLOADED_NAME
+rm -f $QEMU_HOME/$QEMU_DOWNLOADED_NAME
 
 echo
 echo "================================================="
 echo "  Downloading OurGrid Worker QEMU image ..."
 echo "================================================="
 
-wget -nc -P $VM_IMAGES_DIR http://www2.lsd.ufcg.edu.br/~marcosancj/ubuntu-lts.qcow2
+wget -nc -P $VM_IMAGES_DIR http://maven.ourgrid.org/repos/linux/qemu/linux-qemu/og-image.qcow2
 
 /bin/bash copyworkers-qemu "$NUM_WORKERS" "$USERNAME" "$SERVERNAME" "$PASSWORD" "$PEERADDRESS" "$IMAGE_FILE"
 
@@ -120,7 +129,7 @@ do
 	
 	echo "vm.name=""$VM_NAME"_"$WORKER_NUM" >> $WORKER_PROPERTIES
 	
-	NEW_DISK_PATH="$VM_IMAGES_DIR/ubuntu-lts.qcow2"
+	NEW_DISK_PATH="$VM_IMAGES_DIR/$IMAGE_DOWNLOADED_FILE"
 	echo "vm.disk.path=""$NEW_DISK_PATH" >> $WORKER_PROPERTIES
 	
 	#IDLENESS DETECTOR
@@ -150,8 +159,6 @@ chmod +x /etc/ourgrid/bin/worker-core
 update-rc.d worker-qemu defaults
 
 # Installing files for idleness detector
-CPU_ARCH=`uname -m`
-CPU_x86_64_ARCH=x86_64
 tar -xvf /etc/ourgrid/xprintidle.tar.gz -C /etc/ourgrid/
 if [ "$CPU_ARCH" == "$CPU_X86_64_ARCH" ]; then 
 	mv /etc/ourgrid/xprintidle-x86_64 /etc/ourgrid/bin/xprintidle
