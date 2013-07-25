@@ -76,7 +76,6 @@ IMAGE_DOWNLOADED_FILE="$IMAGE_NAME.qcow2"
 
 CPU_ARCH=`uname -m`
 CPU_x86_64_ARCH=x86_64
-QEMU_DOWNLOADED_NAME="qemu.tar.gz"
 
 echo
 echo "================================================="
@@ -86,10 +85,12 @@ echo "================================================="
 QEMU_HOME=$INSTALLATION_DIR/qemu
 if [ "$CPU_ARCH" == "$CPU_X86_64_ARCH" ]; then 
 	QEMU_DOWNLOAD_URL="http://maven.ourgrid.org/repos/linux/qemu/linux-qemu/qemu-arch64.tar.gz"
+	QEMU_DOWNLOADED_NAME="qemu-arch64.tar.gz"
 else
 	QEMU_DOWNLOAD_URL="http://maven.ourgrid.org/repos/linux/qemu/linux-qemu/qemu-arch32.tar.gz"
+	QEMU_DOWNLOADED_NAME="qemu-arch32.tar.gz"
 fi
-wget -nc -P $QEMU_HOME -O $QEMU_DOWNLOADED_NAME $QEMU_DOWNLOAD_URL
+wget -nc -P $QEMU_HOME $QEMU_DOWNLOAD_URL
 cd $QEMU_HOME
 tar -xzf $QEMU_DOWNLOADED_NAME
 rm -f $QEMU_HOME/$QEMU_DOWNLOADED_NAME
