@@ -7,5 +7,6 @@ rm -rf /etc/ourgrid/qemu
 rm -rf /var/log/ourgrid/worker-qemu*.log*
 rm -rf /etc/ourgrid/bin/xprintidle
 rm -rf /etc/ourgrid/idleness
+rm -rf /var/run/ourgrid
 
 exit 0

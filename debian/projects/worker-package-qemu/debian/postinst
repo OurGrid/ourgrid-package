@@ -100,7 +100,11 @@ echo "================================================="
 echo "  Downloading OurGrid Worker QEMU image ..."
 echo "================================================="
 
-wget -nc -P $VM_IMAGES_DIR http://maven.ourgrid.org/repos/linux/qemu/linux-qemu/og-image.qcow2
+wget -nc -P $VM_IMAGES_DIR http://maven.ourgrid.org/repos/linux/qemu/linux-qemu/$IMAGE_NAME.tar.gz
+IMAGE_DOWNLOADED_VERSION=$(tar -tf $VM_IMAGES_DIR/$IMAGE_NAME.tar.gz)
+tar -xzf $VM_IMAGES_DIR/$IMAGE_NAME.tar.gz -C $VM_IMAGES_DIR
+rm -f $VM_IMAGES_DIR/$IMAGE_NAME.tar.gz
+mv $VM_IMAGES_DIR/$IMAGE_DOWNLOADED_VERSION $VM_IMAGES_DIR/$IMAGE_DOWNLOADED_FILE
 
 /bin/bash copyworkers-qemu "$NUM_WORKERS" "$USERNAME" "$SERVERNAME" "$PASSWORD" "$PEERADDRESS" "$IMAGE_FILE"
 
