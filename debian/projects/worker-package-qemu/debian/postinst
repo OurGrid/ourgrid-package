@@ -75,7 +75,7 @@ IMAGE_NAME="og-image"
 IMAGE_DOWNLOADED_FILE="$IMAGE_NAME.qcow2"
 
 CPU_ARCH=`uname -m`
-CPU_x86_64_ARCH=x86_64
+CPU_X86_64_ARCH=x86_64
 
 echo
 echo "================================================="
