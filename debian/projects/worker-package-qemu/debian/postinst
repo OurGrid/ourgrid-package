@@ -38,7 +38,7 @@ memory() {
 space_available() {
   DEVICE=`df -P /etc | tail -1 | cut -d' ' -f 1`
   SPACE_AVAILABLE=`df -B 1073741824 | grep -w $DEVICE | awk '{print $4}'`
-  NUM_WORKERS_BY_SPACE=`expr $SPACE_AVAILABLE / 10`
+  NUM_WORKERS_BY_SPACE=`expr $SPACE_AVAILABLE / 1`
   echo $NUM_WORKERS_BY_SPACE
 }
 
@@ -61,6 +61,12 @@ MIN_TEMP=$(min $NUMBER_OF_WORKERS_BY_SPACE $NUMBER_OF_PROCESSORS)
 RECOMMENDED_NUM_WORKERS=$(min $MIN_TEMP $NUM_OF_WORKERS_BY_MEM)
 
 NUM_WORKERS=$RECOMMENDED_NUM_WORKERS
+
+if [ $NUM_WORKERS -eq 0 ]; then
+	echo "You don't have enough resources to install OurGrid Worker"
+	exit 1
+fi
+
 USERNAME="$HOSTNAME"
 SERVERNAME="xmpp.ourgrid.org"
 PASSWORD="xmpp-password"
@@ -158,31 +164,12 @@ do
 	chown -R ourgrid:ourgrid $PLAYPEN_ROOT_FOLDER
 done
 
-
 chmod +x /etc/init.d/worker-qemu
 chmod +x /etc/ourgrid/bin/worker-core
 update-rc.d worker-qemu defaults
 
-# Installing files for idleness detector
-tar -xvf /etc/ourgrid/xprintidle.tar.gz -C /etc/ourgrid/
-if [ "$CPU_ARCH" == "$CPU_X86_64_ARCH" ]; then 
-	mv /etc/ourgrid/xprintidle-x86_64 /etc/ourgrid/bin/xprintidle
-	rm /etc/ourgrid/xprintidle-i386
-else
-	mv /etc/ourgrid/xprintidle-i386 /etc/ourgrid/bin/xprintidle
-	rm /etc/ourgrid/xprintidle-x86_64
-fi
-
-rm /etc/ourgrid/xprintidle.tar.gz
-touch /etc/ourgrid/idleness
-chmod 777 /etc/ourgrid/idleness
-chmod +x /etc/ourgrid/bin/xprintidle
-chmod +x /etc/X11/Xsession.d/99ourgrid-worker-idleness
-
-# if the user is logged and has display
-if [ ! -z $DISPLAY ]; then 
-	 /etc/X11/Xsession.d/99ourgrid-worker-idleness
-fi
+chown root:root /usr/share/ourgrid/idleness
+chmod 4755 /usr/share/ourgrid/idleness
 
 # Creating log directory and changing owner to OurGrid
 mkdir -p /var/log/ourgrid
