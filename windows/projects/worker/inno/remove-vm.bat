@@ -1,1 +1,0 @@
-java -Djava.ext.dirs="[[COMMONS]]" org.ourgrid.virt.Main -m destroy -h vbox -vm [[VMNAME]]

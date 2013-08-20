@@ -5,7 +5,7 @@
 
 [Setup]
 AppName=OurGrid Worker
-AppVersion=4.3.2
+AppVersion=4.4.0
 AppPublisher=OurGrid
 AppCopyright=OurGrid
 DefaultDirName={pf}\OurGrid\Worker
@@ -25,13 +25,12 @@ Source: "log4j.cfg.xml"; DestDir: "{app}"; Flags: onlyifdoesntexist
 Source: "worker.bat"; DestDir: "{app}"
 Source: "worker-nogui.bat"; DestDir: "{app}"
 Source: "icon.ico"; DestDir: "{app}"
-Source: "..\vbox-win32-bin\*"; DestDir: "{app}\vbox-win32-bin"; Flags: recursesubdirs
+Source: "..\qemu-win32-bin\*"; DestDir: "{app}\qemu-win32-bin"; Flags: recursesubdirs
 Source: "..\lib\*"; DestDir: "{app}\lib"; Flags: recursesubdirs
 Source: "..\lib\ourvirt*"; DestDir: "{app}\commons"; Flags: uninsneveruninstall
 Source: "..\lib\commons*"; DestDir: "{app}\commons"; Flags: uninsneveruninstall
 Source: "..\lib\gson*"; DestDir: "{app}\commons"; Flags: uninsneveruninstall
 Source: "uninstall.bat"; DestDir: "{app}"; Flags: uninsneveruninstall
-Source: "remove-vm.bat"; DestDir: "{app}"; Flags: uninsneveruninstall
 
 [Dirs]
 Name: "{app}\.storage"
@@ -45,25 +44,19 @@ Name: "{group}\Worker\Uninstall"; Filename: "{app}\uninstall.bat"; IconFilename:
 [Run]
 Filename: {src}\GenerateCert.bat; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""{code:GetXMPPUser}"" ""{code:GetXMPPServer}"" ""{code:Normalize|{userappdata}\OurGrid\Worker\certification\mycertificate\mycertificate.cer}"" ""{app}\lib"""; Flags: skipifdoesntexist waituntilterminated runhidden shellexec; StatusMsg: Setting configuration
 Filename: {src}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""commune.xmpp.username={code:GetXMPPUser};commune.xmpp.servername={code:GetXMPPServer};commune.xmpp.password={code:GetXMPPPassword};worker.peer.address={code:GetPeerUser}@{code:GetPeerServer};worker.storagedir={code:Normalize|{userappdata}\OurGrid\Worker\.storage};worker.playpenroot={code:Normalize|{userappdata}\OurGrid\Worker\playpen}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
-Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\worker.bat"" ""[[OGROOT]]={code:Normalize|{userappdata}\OurGrid\Worker};[[LOG4J]]={code:Normalize|{app}\log4j.cfg.xml};[[VBOXBIN]]={code:Normalize|{app}\vbox-win32-bin}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
-Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\worker-nogui.bat"" ""[[OGROOT]]={code:Normalize|{userappdata}\OurGrid\Worker};[[LOG4J]]={code:Normalize|{app}\log4j.cfg.xml};[[VBOXBIN]]={code:Normalize|{app}\vbox-win32-bin}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
+Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\worker.bat"" ""[[OGROOT]]={code:Normalize|{userappdata}\OurGrid\Worker};[[LOG4J]]={code:Normalize|{app}\log4j.cfg.xml};[[QEMUBIN]]={code:Normalize|{app}\qemu-win32-bin}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
+Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\worker-nogui.bat"" ""[[OGROOT]]={code:Normalize|{userappdata}\OurGrid\Worker};[[LOG4J]]={code:Normalize|{app}\log4j.cfg.xml};[[QEMUBIN]]={code:Normalize|{app}\qemu-win32-bin}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
 Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\log4j.cfg.xml"" ""[[LOGDIR]]={code:Normalize|{userappdata}\OurGrid\Worker\logs\log}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
-Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\remove-vm.bat"" ""[[COMMONS]]={app}\commons;[[VMNAME]]={code:GetVMName}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
 Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\uninstall.bat"" ""[[UNINSTALLEXE]]={code:Normalize|{uninstallexe}} "" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
 
 ; Default Sandboxing
-Filename: {src}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""worker.executor=GENERIC;vm.disk.path={code:Normalize|{userappdata}\OurGrid\Worker\vm-image.vdi}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting up Virtual Box; Check: IsVBoxAndDefaultSandbox
-Filename: {src}\wget\wget.exe; Parameters: " -N -O ""{userappdata}\OurGrid\Worker\vm-image.vdi"" ""http://maven.ourgrid.org/repos/linux/vbox/linux-vbox/og-image.vdi"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Downloading Virtual Box image; Check: IsVBoxAndDefaultSandbox
+Filename: {src}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""worker.executor=GENERIC;vm.disk.path={code:Normalize|{userappdata}\OurGrid\Worker\vm-image.qcow2}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting up QEMU; Check: IsVBoxAndDefaultSandbox
+Filename: {src}\wget\wget.exe; Parameters: " -N -O ""{userappdata}\OurGrid\Worker\og-image.tar.gz"" ""http://maven.ourgrid.org/repos/linux/qemu/linux-qemu/og-image.tar.gz"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Downloading QEMU image; Check: IsVBoxAndDefaultSandbox
+Filename: {src}\wget\TarTool.exe; Parameters: " ""{userappdata}\OurGrid\Worker\og-image.tar.gz"" ""{userappdata}\OurGrid\Worker"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Extracting QEMU image; Check: IsVBoxAndDefaultSandbox
+Filename: {cmd}; Parameters: " /C ren ""{userappdata}\OurGrid\Worker\*.qcow2"" ""{userappdata}\OurGrid\Worker\vm-image.qcow2"" "; Flags: waituntilterminated shellexec; StatusMsg: Extracting QEMU image; Check: IsVBoxAndDefaultSandbox
 
 ; Custom Sandboxing
-Filename: {src}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""worker.executor=GENERIC;vm.disk.path={code:Normalize|{code:GetDiskImagePath}};vm.name={code:GetVMName};vm.user={code:GetVMUser};vm.password={code:GetVMPassword};vm.disk.type={code:GetVMDiskType};vm.os={code:GetOSType};vm.os.version={code:GetOSVersion};vm.memory={code:GetVMMem}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting up Virtual Box; Check: IsVBoxAndCustomSandbox
-
-; Virtualbox stuff
-Filename: {app}\vbox-win32-bin\comregister.cmd; Flags: skipifdoesntexist waituntilterminated runhidden shellexec; StatusMsg: Configuring VirtualBox
-Filename: {app}\vbox-win32-bin\NetAdpInstall.exe; Flags: skipifdoesntexist waituntilterminated runhidden; StatusMsg: Configuring VirtualBox
-Filename: {app}\vbox-win32-bin\NetFltInstall.exe; Flags: skipifdoesntexist waituntilterminated runhidden; StatusMsg: Configuring VirtualBox
-Filename: {app}\vbox-win32-bin\SUPInstall.exe; Flags: skipifdoesntexist waituntilterminated runhidden; StatusMsg: Configuring VirtualBox
-Filename: {sys}\rundll32; Parameters: " ""setupapi,InstallHinfSection"" ""DefaultInstall"" ""132"" ""{app}\vbox-win32-bin\drivers\network\vboxdrv\VBoxDrv.inf"" "; Flags: skipifdoesntexist waituntilterminated runhidden shellexec; StatusMsg: Configuring VirtualBox
+Filename: {src}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""worker.executor=GENERIC;vm.disk.path={code:Normalize|{code:GetDiskImagePath}};vm.name={code:GetVMName};vm.user={code:GetVMUser};vm.password={code:GetVMPassword};vm.disk.type={code:GetVMDiskType};vm.os={code:GetOSType};vm.os.version={code:GetOSVersion};vm.memory={code:GetVMMem}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting up QEMU; Check: IsVBoxAndCustomSandbox
 
 [UninstallDelete]
 Type: dirifempty; Name: {pf}\OurGrid\Worker; 
@@ -72,7 +65,6 @@ Type: dirifempty; Name: {pf}\OurGrid;
 
 [Registry]
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; Check: InstallService; Flags: uninsdeletekeyifempty uninsdeletevalue createvalueifdoesntexist; ValueName: OurGrid Worker; ValueData: "start /min cmd /c ""{app}\worker-nogui.bat"" "
-Root: HKLM; Subkey: SYSTEM\CurrentControlSet\Control\Session Manager\Environment; ValueType: expandsz; ValueName: "VBOX_HOME"; ValueData: "{userappdata}\OurGrid\Worker\vbox"
 
 [Code]
 var
@@ -95,7 +87,7 @@ var
   OSVersionLabel, OSTypeLabel, VMDiskTypeLabel: TLabel;
 begin
   
-  VMName := 'owvbox_1';
+  VMName := 'owqemu_1';
   Virtualization := 'None';
   Configuration := 'None';
     
@@ -119,12 +111,12 @@ begin
     'Please specify what kind of Virtualization strategy do you want to use, then click Next.',
     True, False);
   FlavorPage.Add('Vanilla (no Sandboxed Execution)');
-  FlavorPage.Add('Virtual Box');
+  FlavorPage.Add('QEMU');
   FlavorPage.SelectedValueIndex := 0
     
   VBoxPage := CreateInputOptionPage(FlavorPage.ID,
-    'Sandbox Information', 'Which Virtual Box configuration will you use?',
-    'Please specify what Virtual Box machine configuration do you want to use, then click Next.',
+    'Sandbox Information', 'Which QEMU configuration will you use?',
+    'Please specify what QEMU machine configuration do you want to use, then click Next.',
     True, False);
   VBoxPage.Add('Default (Provided by the OurGrid Team)');
   VBoxPage.Add('Custom');
@@ -132,7 +124,7 @@ begin
 
   // VM Name and Ram
   VBoxNamePage := CreateInputQueryPage(VBoxPage.ID,
-    'Virtual Box VM configuration', 'Which name you will give to the Virtual Machine? And how much RAM?',
+    'QEMU VM configuration', 'Which name you will give to the Virtual Machine? And how much RAM?',
     'Please specify the VM Name and RAM size, then click Next. ');
   VBoxNamePage.Add('VM Name:', False);
   VBoxNamePage.Add('VM Memory (in MB):', False);
@@ -142,7 +134,7 @@ begin
   // VM Disk
   VBoxDiskPage := CreateInputFilePage(VBoxNamePage.ID,
     'Select Disk Image location', 'Where is the Disk Image file located?',
-    'Select where the Disk Image is located, then click Next. Notice that this image MUST have GuestAdditions installed.');
+    'Select where the Disk Image is located, then click Next.');
 
   VMDiskTypeLabel := TLabel.Create(VBoxDiskPage);    
   VMDiskTypeLabel.Parent := VBoxDiskPage.Surface;
@@ -161,11 +153,11 @@ begin
   VMDiskType.Left := ScaleX(0); VMDiskType.Top := ScaleY(106); VMDiskType.Width := ScaleX(70); VMDiskType.Height := ScaleY(13);
 
   VBoxDiskPage.Add('Location of the Disk Image:',         
-    'Virtual Disk images|*.vdi|VMware Virtual Machine Disks|*.vmdk|Microsoft Virtual PC VHD|*.vhd|All files|*.*', '*.*');
+    'QCOW2 images|*.qcow2||All files|*.*', '*.*');
 
   // VM SO
   VBoxSOPage := CreateInputQueryPage(VBoxDiskPage.ID,
-    'Virtual Box VM configuration', 'Which OS will you use? ',
+    'QEMU VM configuration', 'Which OS will you use? ',
     'Please specify the Virtual Machine OS settings, then click Next. ');
   
   OSTypeLabel := TLabel.Create(VBoxSOPage);    
@@ -199,7 +191,7 @@ begin
 
   // VM Login
   VBoxLoginPage := CreateInputQueryPage(VBoxSOPage.ID,
-    'Virtual Box VM configuration', 'Which User will you use inside the Virtual Machine?',
+    'QEMU VM configuration', 'Which User will you use inside the Virtual Machine?',
     'Please specify the User settings, then click Next. ');
   VBoxLoginPage.Add('VM User name:', False);
   VBoxLoginPage.Add('VM User password:', True);
@@ -219,7 +211,7 @@ begin
   UserPage.Values[0] := GetPreviousData('XMPPUser',  Lowercase(ExpandConstant('{sysuserinfoname}')));
   UserPage.Values[1] := GetPreviousData('XMPPServer', 'xmpp.ourgrid.org');
   UserPage.Values[2] := GetPreviousData('XMPPPassword', 'xmpp-password');
-  PeerPage.Values[0] := GetPreviousData('PeerUser', 'lsd-peer');
+  PeerPage.Values[0] := GetPreviousData('PeerUser', 'lsd-voluntary-peer');
   PeerPage.Values[1] := GetPreviousData('PeerServer', 'xmpp.ourgrid.org');
 
 end;

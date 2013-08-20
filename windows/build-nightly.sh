@@ -62,11 +62,8 @@ for PROJECT_FOLDER in $PROJECTS_DIR/*; do
   cp -r $PROJECT_FOLDER/inno .
   cp -r $CURRENT_DIR/common/* ./inno
   bash ./inno/pre-build.sh
-  iscc inno/build.iss /O"PROJECT_PATH" /F"$SOURCE"
-    
-  # Copy packages to download folder
-  # DOWNLOAD_PACKAGE_DIR=$DOWNLOAD_ROOT/$PACKAGE/$SOURCE
-  # mkdir -p $DOWNLOAD_PACKAGE_DIR
-  # rsync -a $PROJECT_PATH/${PACKAGE}_${BUILD_VERSION}* $DOWNLOAD_PACKAGE_DIR --exclude=*.build
+  echo "iscc /O\"$PROJECT_PATH\" /F\"$SOURCE\" \"inno/build.iss\""
+  # iscc /O\"$PROJECT_PATH\" /F\"$SOURCE\" \"inno/build.iss\"
+  iscc inno/build.iss
 
 done
