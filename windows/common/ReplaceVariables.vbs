@@ -38,7 +38,7 @@ Do Until objFile.AtEndOfLine
 		Pair = TokenList(i)		
 		SPair = Split(Pair, "=")
 		Key = SPair(0)
-		Value = SPair(1)
+		Value = Mid(Pair, InStr(Pair, "=") + 1)
 		
 		If Trim(SLine(0)) = Key Then
 			objOutFile.WriteLine(Key & sep & Value)
@@ -57,7 +57,7 @@ For i = 0 to Size - 1
 		Pair = TokenList(i)
 		SPair = Split(Pair, "=")
 		Key = SPair(0)
-		Value = SPair(1)
+		Value = Mid(Pair, InStr(Pair, "=") + 1)
 		objOutFile.WriteLine(Key & sep & Value)
 	End If
 Next

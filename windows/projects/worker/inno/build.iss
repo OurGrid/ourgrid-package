@@ -27,10 +27,10 @@ Source: "worker-nogui.bat"; DestDir: "{app}"
 Source: "icon.ico"; DestDir: "{app}"
 Source: "..\qemu-win32-bin\*"; DestDir: "{app}\qemu-win32-bin"; Flags: recursesubdirs
 Source: "..\lib\*"; DestDir: "{app}\lib"; Flags: recursesubdirs
-Source: "..\lib\ourvirt*"; DestDir: "{app}\commons"; Flags: uninsneveruninstall
-Source: "..\lib\commons*"; DestDir: "{app}\commons"; Flags: uninsneveruninstall
-Source: "..\lib\gson*"; DestDir: "{app}\commons"; Flags: uninsneveruninstall
-Source: "uninstall.bat"; DestDir: "{app}"; Flags: uninsneveruninstall
+Source: "..\lib\ourvirt*"; DestDir: "{app}\commons"; Flags: recursesubdirs
+Source: "..\lib\commons*"; DestDir: "{app}\commons"; Flags: recursesubdirs
+Source: "..\lib\gson*"; DestDir: "{app}\commons"; Flags: recursesubdirs
+Source: "uninstall.bat"; DestDir: "{app}"; Flags: recursesubdirs
 
 [Dirs]
 Name: "{app}\.storage"
@@ -52,8 +52,10 @@ Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\uninstall.bat"" ""[[UNI
 ; Default Sandboxing
 Filename: {src}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""worker.executor=GENERIC;vm.disk.path={code:Normalize|{userappdata}\OurGrid\Worker\vm-image.qcow2}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting up QEMU; Check: IsVBoxAndDefaultSandbox
 Filename: {src}\wget\wget.exe; Parameters: " -N -O ""{userappdata}\OurGrid\Worker\og-image.tar.gz"" ""http://maven.ourgrid.org/repos/linux/qemu/linux-qemu/og-image.tar.gz"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Downloading QEMU image; Check: IsVBoxAndDefaultSandbox
-Filename: {src}\wget\TarTool.exe; Parameters: " ""{userappdata}\OurGrid\Worker\og-image.tar.gz"" ""{userappdata}\OurGrid\Worker"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Extracting QEMU image; Check: IsVBoxAndDefaultSandbox
-Filename: {cmd}; Parameters: " /C ren ""{userappdata}\OurGrid\Worker\*.qcow2"" ""{userappdata}\OurGrid\Worker\vm-image.qcow2"" "; Flags: waituntilterminated shellexec; StatusMsg: Extracting QEMU image; Check: IsVBoxAndDefaultSandbox
+Filename: {src}\wget\TarTool.exe; Parameters: " ""{userappdata}\OurGrid\Worker\og-image.tar.gz"" ""{userappdata}\OurGrid\Worker"" "; Flags: skipifdoesntexist runhidden waituntilterminated shellexec; StatusMsg: Extracting QEMU image; Check: IsVBoxAndDefaultSandbox
+Filename: {cmd}; Parameters: " /C del ""{userappdata}\OurGrid\Worker\vm-image.qcow2"" "; Flags: waituntilterminated runhidden shellexec; StatusMsg: Extracting QEMU image; Check: IsVBoxAndDefaultSandbox
+Filename: {cmd}; Parameters: " /C del ""{userappdata}\OurGrid\Worker\og-image.tar.gz"" "; Flags: waituntilterminated runhidden shellexec; StatusMsg: Extracting QEMU image; Check: IsVBoxAndDefaultSandbox
+Filename: {cmd}; Parameters: " /C move ""{userappdata}\OurGrid\Worker\linux-qemu-*.qcow2"" ""{userappdata}\OurGrid\Worker\vm-image.qcow2"" "; Flags: waituntilterminated runhidden shellexec; StatusMsg: Extracting QEMU image; Check: IsVBoxAndDefaultSandbox
 
 ; Custom Sandboxing
 Filename: {src}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""worker.executor=GENERIC;vm.disk.path={code:Normalize|{code:GetDiskImagePath}};vm.name={code:GetVMName};vm.user={code:GetVMUser};vm.password={code:GetVMPassword};vm.disk.type={code:GetVMDiskType};vm.os={code:GetOSType};vm.os.version={code:GetOSVersion};vm.memory={code:GetVMMem}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting up QEMU; Check: IsVBoxAndCustomSandbox
@@ -61,7 +63,8 @@ Filename: {src}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worke
 [UninstallDelete]
 Type: dirifempty; Name: {pf}\OurGrid\Worker; 
 Type: dirifempty; Name: {pf}\OurGrid;
-
+Type: filesandordirs; Name: {userappdata}\OurGrid\Worker;
+Type: dirifempty; Name: {userappdata}\OurGrid;
 
 [Registry]
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; Check: InstallService; Flags: uninsdeletekeyifempty uninsdeletevalue createvalueifdoesntexist; ValueName: OurGrid Worker; ValueData: "start /min cmd /c ""{app}\worker-nogui.bat"" "
