@@ -45,7 +45,7 @@ memory() {
 
 space_available() {
   DEVICE=`df -P /etc | tail -1 | cut -d' ' -f 1`
-  SPACE_AVAILABLE=`df -B 1073741824 | grep -w $DEVICE | awk '{print $4}'`
+  SPACE_AVAILABLE=`df -P -B 1073741824 | grep -w $DEVICE | awk '{print $4}'`
   NUM_WORKERS_BY_SPACE=`expr $SPACE_AVAILABLE / 1`
   echo $NUM_WORKERS_BY_SPACE
 }
