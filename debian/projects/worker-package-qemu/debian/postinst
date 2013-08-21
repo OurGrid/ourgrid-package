@@ -11,6 +11,14 @@ min() {
   fi
 }
 
+max() {
+  if [ "$1" -lt "$2" ]; then
+    echo "$2"
+  else
+    echo "$1"
+  fi
+}
+
 total_memory() {
   NUM_WORKERS="$1"
   TOTAL_MEM=`grep MemTotal /proc/meminfo | awk '{print $2}'`
@@ -58,14 +66,10 @@ NUM_OF_WORKERS_BY_MEM=$(memory)
 
 # Recommend a number of workers
 MIN_TEMP=$(min $NUMBER_OF_WORKERS_BY_SPACE $NUMBER_OF_PROCESSORS)
-RECOMMENDED_NUM_WORKERS=$(min $MIN_TEMP $NUM_OF_WORKERS_BY_MEM)
+MIN_RECOMMENDED_NUM_WORKERS=$(min $MIN_TEMP $NUM_OF_WORKERS_BY_MEM)
+RECOMMENDED_NUM_WORKERS=$(max 1 $MIN_RECOMMENDED_NUM_WORKERS)
 
 NUM_WORKERS=$RECOMMENDED_NUM_WORKERS
-
-if [ $NUM_WORKERS -eq 0 ]; then
-	echo "You don't have enough resources to install OurGrid Worker"
-	exit 1
-fi
 
 USERNAME="$HOSTNAME"
 SERVERNAME="xmpp.ourgrid.org"
