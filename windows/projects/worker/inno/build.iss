@@ -16,10 +16,10 @@ SolidCompression=yes
 OutputDir=userdocs:.ourgrid\Worker\setup
 
 [Files]
-Source: "ReplaceVariables.vbs"; DestDir: "{src}"
-Source: "ReplaceTokens.vbs"; DestDir: "{src}"
-Source: "GenerateCert.bat"; DestDir: "{src}"
-Source: "wget\*"; DestDir: "{src}\wget"
+Source: "ReplaceVariables.vbs"; DestDir: "{tmp}"
+Source: "ReplaceTokens.vbs"; DestDir: "{tmp}"
+Source: "GenerateCert.bat"; DestDir: "{tmp}"
+Source: "wget\*"; DestDir: "{tmp}\wget"
 Source: "worker.properties"; DestDir: "{userappdata}\OurGrid\Worker"; Flags: onlyifdoesntexist uninsneveruninstall
 Source: "log4j.cfg.xml"; DestDir: "{app}"; Flags: onlyifdoesntexist
 Source: "worker.bat"; DestDir: "{app}"
@@ -42,23 +42,23 @@ Name: "{group}\Worker\Configure"; Filename: "notepad.exe"; Parameters: "{userapp
 Name: "{group}\Worker\Uninstall"; Filename: "{app}\uninstall.bat"; IconFilename: "{uninstallexe}" 
 
 [Run]
-Filename: {src}\GenerateCert.bat; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""{code:GetXMPPUser}"" ""{code:GetXMPPServer}"" ""{code:Normalize|{userappdata}\OurGrid\Worker\certification\mycertificate\mycertificate.cer}"" ""{app}\lib"""; Flags: skipifdoesntexist waituntilterminated runhidden shellexec; StatusMsg: Setting configuration
-Filename: {src}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""commune.xmpp.username={code:GetXMPPUser};commune.xmpp.servername={code:GetXMPPServer};commune.xmpp.password={code:GetXMPPPassword};worker.peer.address={code:GetPeerUser}@{code:GetPeerServer};worker.storagedir={code:Normalize|{userappdata}\OurGrid\Worker\.storage};worker.playpenroot={code:Normalize|{userappdata}\OurGrid\Worker\playpen}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
-Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\worker.bat"" ""[[OGROOT]]={code:Normalize|{userappdata}\OurGrid\Worker};[[LOG4J]]={code:Normalize|{app}\log4j.cfg.xml};[[QEMUBIN]]={code:Normalize|{app}\qemu-win32-bin}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
-Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\worker-nogui.bat"" ""[[OGROOT]]={code:Normalize|{userappdata}\OurGrid\Worker};[[LOG4J]]={code:Normalize|{app}\log4j.cfg.xml};[[QEMUBIN]]={code:Normalize|{app}\qemu-win32-bin}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
-Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\log4j.cfg.xml"" ""[[LOGDIR]]={code:Normalize|{userappdata}\OurGrid\Worker\logs\log}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
-Filename: {src}\ReplaceTokens.vbs; Parameters: " ""{app}\uninstall.bat"" ""[[UNINSTALLEXE]]={code:Normalize|{uninstallexe}} "" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
+Filename: {tmp}\GenerateCert.bat; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""{code:GetXMPPUser}"" ""{code:GetXMPPServer}"" ""{code:Normalize|{userappdata}\OurGrid\Worker\certification\mycertificate\mycertificate.cer}"" ""{app}\lib"""; Flags: skipifdoesntexist waituntilterminated runhidden shellexec; StatusMsg: Setting configuration
+Filename: {tmp}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""commune.xmpp.username={code:GetXMPPUser};commune.xmpp.servername={code:GetXMPPServer};commune.xmpp.password={code:GetXMPPPassword};worker.peer.address={code:GetPeerUser}@{code:GetPeerServer};worker.storagedir={code:Normalize|{userappdata}\OurGrid\Worker\.storage};worker.playpenroot={code:Normalize|{userappdata}\OurGrid\Worker\playpen}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
+Filename: {tmp}\ReplaceTokens.vbs; Parameters: " ""{app}\worker.bat"" ""[[OGROOT]]={code:Normalize|{userappdata}\OurGrid\Worker};[[LOG4J]]={code:Normalize|{app}\log4j.cfg.xml};[[QEMUBIN]]={code:Normalize|{app}\qemu-win32-bin}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
+Filename: {tmp}\ReplaceTokens.vbs; Parameters: " ""{app}\worker-nogui.bat"" ""[[OGROOT]]={code:Normalize|{userappdata}\OurGrid\Worker};[[LOG4J]]={code:Normalize|{app}\log4j.cfg.xml};[[QEMUBIN]]={code:Normalize|{app}\qemu-win32-bin}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
+Filename: {tmp}\ReplaceTokens.vbs; Parameters: " ""{app}\log4j.cfg.xml"" ""[[LOGDIR]]={code:Normalize|{userappdata}\OurGrid\Worker\logs\log}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
+Filename: {tmp}\ReplaceTokens.vbs; Parameters: " ""{app}\uninstall.bat"" ""[[UNINSTALLEXE]]={code:Normalize|{uninstallexe}} "" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
 
 ; Default Sandboxing
-Filename: {src}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""worker.executor=GENERIC;vm.disk.path={code:Normalize|{userappdata}\OurGrid\Worker\vm-image.qcow2}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting up QEMU; Check: IsVBoxAndDefaultSandbox
-Filename: {src}\wget\wget.exe; Parameters: " -N -O ""{userappdata}\OurGrid\Worker\og-image.tar.gz"" ""http://maven.ourgrid.org/repos/linux/qemu/linux-qemu/og-image.tar.gz"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Downloading QEMU image; Check: IsVBoxAndDefaultSandbox
-Filename: {src}\wget\TarTool.exe; Parameters: " ""{userappdata}\OurGrid\Worker\og-image.tar.gz"" ""{userappdata}\OurGrid\Worker"" "; Flags: skipifdoesntexist runhidden waituntilterminated shellexec; StatusMsg: Extracting QEMU image; Check: IsVBoxAndDefaultSandbox
+Filename: {tmp}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""worker.executor=GENERIC;vm.disk.path={code:Normalize|{userappdata}\OurGrid\Worker\vm-image.qcow2}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting up QEMU; Check: IsVBoxAndDefaultSandbox
+Filename: {tmp}\wget\wget.exe; Parameters: " -N -O ""{userappdata}\OurGrid\Worker\og-image.tar.gz"" ""http://maven.ourgrid.org/repos/linux/qemu/linux-qemu/og-image.tar.gz"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Downloading QEMU image; Check: IsVBoxAndDefaultSandbox
+Filename: {tmp}\wget\TarTool.exe; Parameters: " ""{userappdata}\OurGrid\Worker\og-image.tar.gz"" ""{userappdata}\OurGrid\Worker"" "; Flags: skipifdoesntexist runhidden waituntilterminated shellexec; StatusMsg: Extracting QEMU image; Check: IsVBoxAndDefaultSandbox
 Filename: {cmd}; Parameters: " /C del ""{userappdata}\OurGrid\Worker\vm-image.qcow2"" "; Flags: waituntilterminated runhidden shellexec; StatusMsg: Extracting QEMU image; Check: IsVBoxAndDefaultSandbox
 Filename: {cmd}; Parameters: " /C del ""{userappdata}\OurGrid\Worker\og-image.tar.gz"" "; Flags: waituntilterminated runhidden shellexec; StatusMsg: Extracting QEMU image; Check: IsVBoxAndDefaultSandbox
 Filename: {cmd}; Parameters: " /C move ""{userappdata}\OurGrid\Worker\linux-qemu-*.qcow2"" ""{userappdata}\OurGrid\Worker\vm-image.qcow2"" "; Flags: waituntilterminated runhidden shellexec; StatusMsg: Extracting QEMU image; Check: IsVBoxAndDefaultSandbox
 
 ; Custom Sandboxing
-Filename: {src}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""worker.executor=GENERIC;vm.disk.path={code:Normalize|{code:GetDiskImagePath}};vm.name={code:GetVMName};vm.user={code:GetVMUser};vm.password={code:GetVMPassword};vm.disk.type={code:GetVMDiskType};vm.os={code:GetOSType};vm.os.version={code:GetOSVersion};vm.memory={code:GetVMMem}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting up QEMU; Check: IsVBoxAndCustomSandbox
+Filename: {tmp}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""worker.executor=GENERIC;vm.disk.path={code:Normalize|{code:GetDiskImagePath}};vm.name={code:GetVMName};vm.user={code:GetVMUser};vm.password={code:GetVMPassword};vm.disk.type={code:GetVMDiskType};vm.os={code:GetOSType};vm.os.version={code:GetOSVersion};vm.memory={code:GetVMMem}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting up QEMU; Check: IsVBoxAndCustomSandbox
 
 [UninstallDelete]
 Type: dirifempty; Name: {pf}\OurGrid\Worker; 
