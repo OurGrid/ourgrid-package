@@ -25,6 +25,7 @@ Source: "log4j.cfg.xml"; DestDir: "{app}"; Flags: onlyifdoesntexist
 Source: "worker.bat"; DestDir: "{app}"
 Source: "worker-nogui.bat"; DestDir: "{app}"
 Source: "icon.ico"; DestDir: "{app}"
+Source: "wrapper\*"; DestDir: "{app}\wrapper"; Flags: recursesubdirs
 Source: "..\qemu-win32-bin\*"; DestDir: "{app}\qemu-win32-bin"; Flags: recursesubdirs
 Source: "..\lib\*"; DestDir: "{app}\lib"; Flags: recursesubdirs
 Source: "..\lib\ourvirt*"; DestDir: "{app}\commons"; Flags: recursesubdirs
@@ -46,6 +47,7 @@ Filename: {tmp}\GenerateCert.bat; Parameters: """{userappdata}\OurGrid\Worker\wo
 Filename: {tmp}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""commune.xmpp.username={code:GetXMPPUser};commune.xmpp.servername={code:GetXMPPServer};commune.xmpp.password={code:GetXMPPPassword};worker.peer.address={code:GetPeerUser}@{code:GetPeerServer};worker.storagedir={code:Normalize|{userappdata}\OurGrid\Worker\.storage};worker.playpenroot={code:Normalize|{userappdata}\OurGrid\Worker\playpen}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
 Filename: {tmp}\ReplaceTokens.vbs; Parameters: " ""{app}\worker.bat"" ""[[OGROOT]]={code:Normalize|{userappdata}\OurGrid\Worker};[[LOG4J]]={code:Normalize|{app}\log4j.cfg.xml};[[QEMUBIN]]={code:Normalize|{app}\qemu-win32-bin}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
 Filename: {tmp}\ReplaceTokens.vbs; Parameters: " ""{app}\worker-nogui.bat"" ""[[OGROOT]]={code:Normalize|{userappdata}\OurGrid\Worker};[[LOG4J]]={code:Normalize|{app}\log4j.cfg.xml};[[QEMUBIN]]={code:Normalize|{app}\qemu-win32-bin}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
+Filename: {tmp}\ReplaceTokens.vbs; Parameters: " ""{app}\wrapper\wrapper.conf"" ""[[OGROOT]]={code:Normalize|{userappdata}\OurGrid\Worker};[[LOG4J]]={code:Normalize|{app}\log4j.cfg.xml};[[QEMUBIN]]={code:Normalize|{app}\qemu-win32-bin}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
 Filename: {tmp}\ReplaceTokens.vbs; Parameters: " ""{app}\log4j.cfg.xml"" ""[[LOGDIR]]={code:Normalize|{userappdata}\OurGrid\Worker\logs\log}"" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
 Filename: {tmp}\ReplaceTokens.vbs; Parameters: " ""{app}\uninstall.bat"" ""[[UNINSTALLEXE]]={code:Normalize|{uninstallexe}} "" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting configuration
 
@@ -60,14 +62,19 @@ Filename: {cmd}; Parameters: " /C move ""{userappdata}\OurGrid\Worker\linux-qemu
 ; Custom Sandboxing
 Filename: {tmp}\ReplaceVariables.vbs; Parameters: """{userappdata}\OurGrid\Worker\worker.properties"" ""worker.executor=GENERIC;vm.disk.path={code:Normalize|{code:GetDiskImagePath}};vm.name={code:GetVMName};vm.user={code:GetVMUser};vm.password={code:GetVMPassword};vm.disk.type={code:GetVMDiskType};vm.os={code:GetOSType};vm.os.version={code:GetOSVersion};vm.memory={code:GetVMMem}"" ""="" "; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Setting up QEMU; Check: IsVBoxAndCustomSandbox
 
+; Service
+Filename: {app}\wrapper\install-service.bat; Parameters: ""; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Installing service; Check: InstallService
+Filename: {app}\wrapper\start-service.bat; Parameters: ""; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Starting service; Check: InstallService
+
+[UninstallRun]
+Filename: {app}\wrapper\stop-service.bat; Parameters: ""; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Stopping service; Check: InstallService
+Filename: {app}\wrapper\uninstall-service.bat; Parameters: ""; Flags: skipifdoesntexist waituntilterminated shellexec; StatusMsg: Removing service; Check: InstallService
+
 [UninstallDelete]
 Type: dirifempty; Name: {pf}\OurGrid\Worker; 
 Type: dirifempty; Name: {pf}\OurGrid;
 Type: filesandordirs; Name: {userappdata}\OurGrid\Worker;
 Type: dirifempty; Name: {userappdata}\OurGrid;
-
-[Registry]
-Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; Check: InstallService; Flags: uninsdeletekeyifempty uninsdeletevalue createvalueifdoesntexist; ValueName: OurGrid Worker; ValueData: "start /min cmd /c ""{app}\worker-nogui.bat"" "
 
 [Code]
 var
