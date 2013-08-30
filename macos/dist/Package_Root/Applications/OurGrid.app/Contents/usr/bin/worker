@@ -1,0 +1,2 @@
+export OGROOT=/Applications/OurGrid.app/Contents/etc/ourgrid/worker
+java -cp .:/Applications/OurGrid.app/Contents/usr/lib/ourgrid/* -Dlog4j.configuration=file:/Applications/OurGrid.app/Contents/etc/ourgrid/worker/log4j.cfg.xml -Dqemu.home=/Applications/OurGrid.app/Contents/usr/share/ourgrid/qemu/bin -Xms64m -Xmx1024m org.ourgrid.worker.ui.sync.Main $1

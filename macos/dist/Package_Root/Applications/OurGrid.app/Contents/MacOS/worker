@@ -1,0 +1,1 @@
+osascript -e "do shell script \"/usr/bin/worker-gui\" with administrator privileges"
