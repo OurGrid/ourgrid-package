@@ -1,0 +1,5 @@
+PROJECT_NAME=ourgrid-commons
+PACKAGE=ourgrid-commons
+DIST_VERSION=4.4.0
+DIST=unstable
+BUILD_ARCH=all

@@ -1,0 +1,9 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: ourgrid-worker-qemu
+Upstream-Contact: Marcos Nobrega <marcosancj@lsd.ufcg.edu.br>
+
+Files: *
+Copyright: Copyright 2013 Marcos Nobrega <marcosancj@lsd.ufcg.edu.br>
+License: Apache-2
+ ourgrid-worker-qemu is distributed under the Apache License 2.0. See the
+ `LICENSE` file.

@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+pkg=ourgrid-commons
+
+# Adds ourgrid user
+    adduser --system --user-group \
+        --home "/var/run/$pkg" \
+        ourgrid || true
+
+#DEBHELPER#

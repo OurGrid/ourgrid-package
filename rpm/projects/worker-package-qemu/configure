@@ -1,0 +1,6 @@
+PROJECT_NAME=ourgrid-worker-qemu
+PACKAGE=ourgrid-worker-qemu
+GIT_URL=https://github.com/OurGrid/OurGrid.git
+DIST_VERSION=4.4.0
+DIST=unstable
+BUILD_ARCH=all
