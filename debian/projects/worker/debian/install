@@ -1,0 +1,10 @@
+deployer/deb/worker/worker.properties /etc/ourgrid/worker
+deployer/deb/worker/worker-core /etc/ourgrid/bin
+deployer/deb/worker/worker /usr/bin
+deployer/deb/worker/ourvirt /usr/bin
+deployer/deb/worker/control/copyworkers /usr/bin
+deployer/deb/worker/log4j.cfg.xml /etc/ourgrid/worker1
+deployer/deb/worker/worker.spec.properties /etc/ourgrid/worker1
+deployer/deb/worker/default/worker /etc/default
+deployer/deb/worker/init.d/worker /etc/init.d
+deployer/deb/worker/idleness /usr/share/ourgrid
