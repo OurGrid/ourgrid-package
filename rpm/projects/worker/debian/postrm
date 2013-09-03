@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+update-rc.d -f worker remove
+rm -rf /etc/ourgrid/worker*
+rm -rf /var/log/ourgrid/worker*.log*
+rm -rf /etc/ourgrid/bin/xprintidle
+rm -rf /etc/ourgrid/idleness
+rm -rf /var/run/ourgrid
+
+exit 0

@@ -1,0 +1,6 @@
+PROJECT_NAME=ourgrid-worker
+PACKAGE=ourgrid-worker
+GIT_URL=https://github.com/OurGrid/OurGrid.git
+DIST_VERSION=4.4.0
+DIST=unstable
+BUILD_ARCH=all
