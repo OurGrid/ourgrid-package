@@ -170,7 +170,7 @@ done
 
 chmod +x /etc/init.d/worker-qemu
 chmod +x /etc/ourgrid/bin/worker-core
-update-rc.d worker-qemu defaults
+update-rc.d worker-qemu defaults 99
 
 chown root:root /usr/share/ourgrid/idleness
 chmod 4755 /usr/share/ourgrid/idleness
@@ -189,5 +189,3 @@ rm -f /usr/bin/copyworkers-vbox
 rm -f "$VM_IMAGES_DIR/$IMAGE_NAME".vdi
 
 usermod -a -G kvm ourgrid || true
-
-#DEBHELPER#

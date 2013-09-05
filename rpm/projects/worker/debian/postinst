@@ -113,7 +113,8 @@ do
 	chown -R ourgrid:ourgrid $PLAYPEN_ROOT_FOLDER
 done
 
-mv /etc/ourgrid/worker /etc/init.d/
+mv /etc/ourgrid/init.d/worker /etc/init.d/
+rm -rf /etc/ourgrid/init.d
 chmod +x /etc/init.d/worker
 chmod +x /etc/ourgrid/bin/worker-core
 chkconfig --add worker

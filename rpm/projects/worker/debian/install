@@ -6,5 +6,5 @@ deployer/deb/worker/control/copyworkers /usr/bin
 deployer/deb/worker/log4j.cfg.xml /etc/ourgrid/worker1
 deployer/deb/worker/worker.spec.properties /etc/ourgrid/worker1
 deployer/rpm/worker/default/worker /etc/default
-deployer/rpm/worker/init.d/worker /etc/ourgrid
+deployer/rpm/worker/init.d/worker /etc/ourgrid/init.d
 deployer/deb/worker/idleness /usr/share/ourgrid
