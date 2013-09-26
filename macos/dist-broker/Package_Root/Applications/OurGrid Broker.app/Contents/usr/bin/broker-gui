@@ -1,0 +1,3 @@
+export BROKERROOT=$HOME/.broker
+mkdir -p $BROKERROOT
+java -cp .:/Applications/OurGrid\ Broker.app/Contents/usr/lib/ourgrid/* -Dlog4j.configuration=file:/Applications/OurGrid\ Broker.app/Contents/etc/ourgrid/broker/log4j.cfg.xml  -Xms64m -Xmx1024m org.ourgrid.broker.ui.async.Main
