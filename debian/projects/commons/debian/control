@@ -3,7 +3,7 @@ Section: misc
 Priority: optional
 Maintainer: Marcos Nobrega <marcosancj@lsd.ufcg.edu.br>
 Build-Depends: debhelper (>= 8), openjdk-6-jdk, cdbs, maven2
-Standards-Version: 4.4.0
+Standards-Version: 4.4.1
 Homepage: http://ourgrid.org
 
 Package: ourgrid-commons
